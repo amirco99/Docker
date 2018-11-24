@@ -1,0 +1,34 @@
+version: '2'
+
+services:
+
+  web:
+    build:
+      context: .
+      dockerfile: httpd.Dockerfile
+    image: httpd-custom
+    ports:
+      - 2000:80
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: linnovate
+      WORDPRESS_DB_USER: linnovate
+      WORDPRESS_DB_PASSWORD: my-secret-pw
+    volumes:
+      - ./httpd-data:/usr/local/apache2/htdocs
+
+  mysql:
+    image: mariadb
+    environment:
+      MYSQL_ROOT_PASSWORD: my-secret-pw
+      MYSQL_DATABASE: linnovate
+      MYSQL_USER: linnovate
+      MYSQL_PASSWORD: test123
+    ports:
+      -   3306:3306
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+
+volumes:
+  mysql-data:
+  httpd-data:
