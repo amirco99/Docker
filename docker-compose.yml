@@ -9,6 +9,11 @@ services:
     image: httpd-custom
     ports:
       - 2000:80
+    environment:
+      WORDPRESS_DB_HOST: mysql
+      WORDPRESS_DB_NAME: linnovate
+      WORDPRESS_DB_USER: linnovate
+      WORDPRESS_DB_PASSWORD: my-secret-pw
     volumes:
       - ./httpd-data:/usr/local/apache2/htdocs
 
