@@ -2,19 +2,7 @@ version: '2'
 
 services:
 
-  web:
-    build:
-      context: .
-      dockerfile: httpd.Dockerfile
-    image: httpd-custom
-    ports:
-      - 2000:80
-    depends_on:
-      - mysql
-    volumes:
-      - ./httpd-data:/usr/local/apache2/htdocs
-
-  mysql:
+  db:
     image: mariadb
     environment:
       MYSQL_ROOT_PASSWORD: my-secret-pw
@@ -25,6 +13,20 @@ services:
       -   3306:3306
     volumes:
       - ./mysql-data:/var/lib/mysql
+
+  web:
+    build:
+      context: .
+      dockerfile: httpd.Dockerfile
+    image: httpd-custom
+    ports:
+      - 2000:80
+    depends_on:
+      - db
+    environment:
+      DB_HOST: db
+    volumes:
+      - ./httpd-data:/usr/local/apache2/htdocs
 
 volumes:
   mysql-data:
